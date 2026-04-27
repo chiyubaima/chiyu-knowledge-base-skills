@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wiki Lint"
+  short_description: "Run health checks and repairs for Chiyu's wiki pages."
+  default_prompt: "Use wiki-lint to inspect my knowledge base health."

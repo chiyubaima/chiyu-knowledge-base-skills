@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wiki Ingest"
+  short_description: "Compile new material into Chiyu's Obsidian knowledge base."
+  default_prompt: "Use wiki-ingest to turn this source into maintained wiki pages."

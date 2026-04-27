@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wiki Spark"
+  short_description: "Quickly capture small ideas and excerpts into the raw layer."
+  default_prompt: "Use wiki-spark to save this idea into my knowledge base."
