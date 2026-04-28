@@ -5,8 +5,10 @@
 
 ## What This Is
 
-This repository contains 4 Codex-compatible skills for maintaining an Obsidian-based personal knowledge base:
+This repository contains 6 Codex-compatible skills for learning, reading, and maintaining an Obsidian-based personal knowledge base:
 
+- `teacher`: guide concept learning and produce confirmed knowledge cards.
+- `read-books`: run mastery-learning book sessions and module synthesis.
 - `wiki-ingest`: compile new source material into maintained wiki pages.
 - `wiki-query`: answer questions using only existing wiki pages.
 - `wiki-lint`: inspect and repair knowledge-base health problems.
@@ -30,6 +32,13 @@ Do not treat saved raw notes as finished knowledge. Raw files preserve source re
 knowledge-base/
 ├── README.md
 ├── AGENT_REUSE_GUIDE.md
+├── teacher/
+│   ├── SKILL.md
+│   ├── agents/openai.yaml
+│   └── references/original-prompt.md
+├── read-books/
+│   ├── SKILL.md
+│   └── agents/openai.yaml
 ├── wiki-ingest/
 │   ├── SKILL.md
 │   └── agents/openai.yaml
@@ -90,10 +99,10 @@ If the vault is missing, stop and ask the user to sync/open the Obsidian vault f
 
 ## How To Install Or Reuse
 
-For Codex-style skill loading, place the 4 skill folders where the target agent can discover local skills. Common options:
+For Codex-style skill loading, place the 6 skill folders where the target agent can discover local skills. Common options:
 
 - Keep this repository as the current workspace and explicitly read/use the skill folders.
-- Copy the 4 folders into the agent's skills directory.
+- Copy the 6 folders into the agent's skills directory.
 - Install from the GitHub repository if the agent supports skill installation from repos.
 
 The GitHub repository is:
@@ -103,6 +112,8 @@ The GitHub repository is:
 After installation, verify that the agent can see these skill names:
 
 ```text
+teacher
+read-books
 wiki-ingest
 wiki-query
 wiki-lint
@@ -115,6 +126,10 @@ Use this decision table:
 
 | User intent | Skill |
 |---|---|
+| "我想了解 X" | `teacher` |
+| "这是什么 / 有什么区别 / 为什么用这个" | `teacher` |
+| "我想读这本书" | `read-books` |
+| "帮我学这本书/这个主题" | `read-books` |
 | "帮我把这个存进知识库" | `wiki-ingest` |
 | "ingest 这篇文章/论文/笔记" | `wiki-ingest` |
 | "从知识库里找..." | `wiki-query` |
@@ -128,6 +143,8 @@ Use this decision table:
 
 When in doubt:
 
+- Use `teacher` for concept learning.
+- Use `read-books` for structured reading.
 - Use `wiki-spark` for fast capture.
 - Use `wiki-ingest` for durable synthesis.
 - Use `wiki-query` for retrieval.
@@ -231,6 +248,45 @@ When clarified:
 
 Add `不适用场景`, `常见误用`, or `反例` only when the page is decision-oriented and the content supports those sections.
 
+## `teacher` In One Screen
+
+Use when the user wants to understand a concept or distinguish related concepts.
+
+Workflow:
+
+1. Read `teacher/references/original-prompt.md` before teaching.
+2. Diagnose the user's understanding state.
+3. Explain the concept, layer, boundaries, use cases, alternatives, and minimal principle.
+4. Run a lightweight understanding check.
+5. Produce a knowledge card and `对话精华`.
+6. Wait for user confirmation before writing.
+7. Save the confirmed card to `raw/teacher-sessions/YYYYMMDD-concept.md`.
+8. Trigger `wiki-ingest` on that raw file.
+
+Important boundary:
+
+Teacher output is a raw learning record. It is not a finished wiki concept page until `wiki-ingest` compiles it.
+
+## `read-books` In One Screen
+
+Use when the user wants guided book study or structured topic learning.
+
+Workflow:
+
+1. Clarify learning goal, current level, and desired outcome.
+2. Plan 4-6 modules with 3-5 lessons each.
+3. Create a book session folder under `raw/read-books-sessions/<book-name>/`.
+4. Maintain `进度.md` with goals, path, mastery status, next lesson, and ingested knowledge.
+5. Write each lesson as a complete raw learning record.
+6. Use checkpoint questions to assess mastery.
+7. At module end, run a synthesis review.
+8. Trigger `wiki-ingest` on the module outputs.
+9. Update `wiki/books/book-<book-name>.md` and related concept pages through `wiki-ingest`.
+
+Important boundary:
+
+Read-books files are raw study records. Module synthesis becomes durable knowledge through `wiki-ingest`.
+
 ## `wiki-query` In One Screen
 
 Use when the user wants to know what the knowledge base says.
@@ -315,7 +371,9 @@ Do not turn a spark into a full concept page unless the user asks for ingest.
 
 ## Teacher And Read-Books Integration
 
-If a teacher-style session produces a knowledge card:
+The `teacher` and `read-books` skills are installed as first-class skills in this repository. They feed the knowledge base through `wiki-ingest`.
+
+If a teacher session produces a knowledge card:
 
 1. Save the knowledge card and conversation essence to:
 

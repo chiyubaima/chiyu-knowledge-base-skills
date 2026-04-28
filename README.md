@@ -1,18 +1,18 @@
 # Personal Knowledge Base Skills
 
-This repository contains a reusable skill set for maintaining an Obsidian-based personal knowledge base with AI agents.
+This repository contains a reusable skill set for learning, reading, and maintaining an Obsidian-based personal knowledge base with AI agents.
 
 The system is built around a simple idea:
 
 ```text
-capture raw material -> compile into wiki knowledge -> query and maintain over time
+learn/read/capture -> save raw material -> compile into wiki knowledge -> query and maintain over time
 ```
 
 It is not just a note-saving workflow. The goal is to help an agent turn articles, excerpts, learning sessions, book notes, and scattered ideas into a living knowledge base that can be searched, updated, linked, and reviewed.
 
 ## How The System Works
 
-The knowledge base has two main layers.
+The knowledge base has two main layers, plus learning workflows that feed those layers.
 
 ### Raw Layer
 
@@ -40,6 +40,32 @@ The wiki layer stores maintained knowledge:
 This is where the agent summarizes, links, updates, compares, tracks contradictions, and builds reusable judgment frameworks.
 
 ## Included Skills
+
+### `teacher`
+
+Use this when you want to understand a concept, clarify boundaries, or build a transferable mental model.
+
+What it does:
+
+1. Diagnoses the user's current understanding.
+2. Explains the concept, boundaries, tradeoffs, and common confusions.
+3. Checks understanding lightly.
+4. Produces a confirmed knowledge card and conversation highlights.
+5. Saves the confirmed result into the raw layer.
+6. Hands the raw file to `wiki-ingest` for durable synthesis.
+
+### `read-books`
+
+Use this for guided book study or systematic topic learning.
+
+What it does:
+
+1. Clarifies the learning goal.
+2. Plans a multi-module reading path.
+3. Creates lesson and progress records in the raw layer.
+4. Uses checkpoint questions to confirm understanding before moving on.
+5. Runs module-level synthesis at the end of each module.
+6. Hands module outputs to `wiki-ingest` to update book and concept pages.
 
 ### `wiki-ingest`
 
@@ -169,9 +195,11 @@ The system works best when agents keep each ingest focused, maintain links caref
 
 ## Reuse
 
-To reuse this system, install or copy the four skill folders into an agent environment that supports local skills:
+To reuse this system, install or copy the six skill folders into an agent environment that supports local skills:
 
 ```text
+teacher/
+read-books/
 wiki-ingest/
 wiki-query/
 wiki-lint/

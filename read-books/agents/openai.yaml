@@ -1,0 +1,4 @@
+interface:
+  display_name: "Read Books"
+  short_description: "Run mastery-learning book sessions and integrate module insights into the knowledge base."
+  default_prompt: "Use read-books to study this book and maintain the knowledge base as we go."
