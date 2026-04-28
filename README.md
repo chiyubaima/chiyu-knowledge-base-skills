@@ -5,7 +5,7 @@ This repository contains a reusable skill set for learning, reading, and maintai
 The system is built around a simple idea:
 
 ```text
-learn/read/capture -> save raw material -> compile into wiki knowledge -> query and maintain over time
+learn/read/discuss/capture -> save raw material -> compile into wiki knowledge -> query and maintain over time
 ```
 
 It is not just a note-saving workflow. The goal is to help an agent turn articles, excerpts, learning sessions, book notes, and scattered ideas into a living knowledge base that can be searched, updated, linked, and reviewed.
@@ -22,6 +22,7 @@ The raw layer stores source material as close to the original as possible:
 - papers
 - book notes
 - learning-session outputs
+- roundtable discussion records
 - quick ideas and excerpts
 - assets and attachments
 
@@ -66,6 +67,19 @@ What it does:
 4. Uses checkpoint questions to confirm understanding before moving on.
 5. Runs module-level synthesis at the end of each module.
 6. Hands module outputs to `wiki-ingest` to update book and concept pages.
+
+### `ljg-roundtable`
+
+Use this when you want to explore a topic through structured, multi-perspective debate.
+
+What it does:
+
+1. Extracts the core issue.
+2. Invites representative thinkers with distinct positions.
+3. Runs a moderated dialectical discussion.
+4. Generates ASCII thinking frameworks and a final knowledge network.
+5. Saves the full discussion into the raw layer.
+6. Hands the discussion record to `wiki-ingest` for topic synthesis.
 
 ### `wiki-ingest`
 
@@ -195,11 +209,12 @@ The system works best when agents keep each ingest focused, maintain links caref
 
 ## Reuse
 
-To reuse this system, install or copy the six skill folders into an agent environment that supports local skills:
+To reuse this system, install or copy the seven skill folders into an agent environment that supports local skills:
 
 ```text
 teacher/
 read-books/
+ljg-roundtable/
 wiki-ingest/
 wiki-query/
 wiki-lint/

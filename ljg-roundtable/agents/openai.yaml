@@ -1,0 +1,4 @@
+interface:
+  display_name: "Roundtable"
+  short_description: "Run a structured multi-perspective roundtable and integrate insights into the knowledge base."
+  default_prompt: "Use ljg-roundtable to explore this topic and save the discussion into the knowledge base."

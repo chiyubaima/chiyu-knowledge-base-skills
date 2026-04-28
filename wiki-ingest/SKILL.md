@@ -29,12 +29,14 @@ Important files:
    - papers: `raw/papers/YYYYMMDD-title.md`
    - teacher output: `raw/teacher-sessions/YYYYMMDD-concept.md`
    - read-books output: `raw/read-books-sessions/<book-name>/`
+   - roundtable output: `raw/roundtable-sessions/YYYYMMDDTHHMMSS--圆桌-topic__roundtable.md`
 3. Identify existing related wiki pages and likely new pages.
 4. Ask at most 3 focus questions before doing full integration when the focus is unclear. Do not try to process every possible idea at once.
 5. Create or update wiki pages:
    - Concepts: `wiki/concepts/<concept>.md`
    - Topics: `wiki/topics/topic-<topic>.md`
    - Books: `wiki/books/book-<book>.md`
+   - Roundtables usually update or create topic pages, with key positions, tensions, judgment frameworks, and open questions.
 6. Add `[[bidirectional links]]` for all referenced concepts whose pages exist or are created.
 7. Update `index.md` when new wiki pages or important entry points are added.
 8. Append to `log.md` using the standard log format.
@@ -135,4 +137,5 @@ Append only:
 - Wiki pages are maintained summaries and may be updated.
 - A teacher knowledge card is not a wiki concept page. Store it in raw first, then ingest it into wiki pages.
 - Teacher "判断框架" content is high-value and must be integrated into the concept page's `判断框架` section.
+- Roundtable discussions are high-value for topic synthesis. Preserve core tensions and open questions; do not flatten multiple positions into a fake consensus.
 - If the vault path is missing, stop and report that the local vault is not available at the configured path.

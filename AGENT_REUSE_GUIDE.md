@@ -5,10 +5,11 @@
 
 ## What This Is
 
-This repository contains 6 Codex-compatible skills for learning, reading, and maintaining an Obsidian-based personal knowledge base:
+This repository contains 7 Codex-compatible skills for learning, reading, discussion, and maintaining an Obsidian-based personal knowledge base:
 
 - `teacher`: guide concept learning and produce confirmed knowledge cards.
 - `read-books`: run mastery-learning book sessions and module synthesis.
+- `ljg-roundtable`: run structured multi-perspective roundtable discussions.
 - `wiki-ingest`: compile new source material into maintained wiki pages.
 - `wiki-query`: answer questions using only existing wiki pages.
 - `wiki-lint`: inspect and repair knowledge-base health problems.
@@ -39,6 +40,10 @@ knowledge-base/
 ├── read-books/
 │   ├── SKILL.md
 │   └── agents/openai.yaml
+├── ljg-roundtable/
+│   ├── SKILL.md
+│   ├── agents/openai.yaml
+│   └── references/original-prompt.md
 ├── wiki-ingest/
 │   ├── SKILL.md
 │   └── agents/openai.yaml
@@ -83,6 +88,7 @@ chiyu-knowledge-base/
 │   ├── papers/
 │   ├── teacher-sessions/
 │   ├── read-books-sessions/
+│   ├── roundtable-sessions/
 │   ├── sparks/
 │   └── assets/
 ├── wiki/
@@ -99,10 +105,10 @@ If the vault is missing, stop and ask the user to sync/open the Obsidian vault f
 
 ## How To Install Or Reuse
 
-For Codex-style skill loading, place the 6 skill folders where the target agent can discover local skills. Common options:
+For Codex-style skill loading, place the 7 skill folders where the target agent can discover local skills. Common options:
 
 - Keep this repository as the current workspace and explicitly read/use the skill folders.
-- Copy the 6 folders into the agent's skills directory.
+- Copy the 7 folders into the agent's skills directory.
 - Install from the GitHub repository if the agent supports skill installation from repos.
 
 The GitHub repository is:
@@ -114,6 +120,7 @@ After installation, verify that the agent can see these skill names:
 ```text
 teacher
 read-books
+ljg-roundtable
 wiki-ingest
 wiki-query
 wiki-lint
@@ -130,6 +137,8 @@ Use this decision table:
 | "这是什么 / 有什么区别 / 为什么用这个" | `teacher` |
 | "我想读这本书" | `read-books` |
 | "帮我学这本书/这个主题" | `read-books` |
+| "圆桌讨论 X" | `ljg-roundtable` |
+| "roundtable / 辩论 / 多角度讨论 X" | `ljg-roundtable` |
 | "帮我把这个存进知识库" | `wiki-ingest` |
 | "ingest 这篇文章/论文/笔记" | `wiki-ingest` |
 | "从知识库里找..." | `wiki-query` |
@@ -145,6 +154,7 @@ When in doubt:
 
 - Use `teacher` for concept learning.
 - Use `read-books` for structured reading.
+- Use `ljg-roundtable` for multi-perspective topic exploration.
 - Use `wiki-spark` for fast capture.
 - Use `wiki-ingest` for durable synthesis.
 - Use `wiki-query` for retrieval.
@@ -164,6 +174,7 @@ Purpose:
 
 - Preserve original sources.
 - Store teacher/read-books outputs.
+- Store full roundtable discussion records.
 - Capture sparks and excerpts.
 
 Default rule:
@@ -287,6 +298,26 @@ Important boundary:
 
 Read-books files are raw study records. Module synthesis becomes durable knowledge through `wiki-ingest`.
 
+## `ljg-roundtable` In One Screen
+
+Use when the user wants structured debate, multi-perspective exploration, or a truth-seeking roundtable on a topic.
+
+Workflow:
+
+1. Read `ljg-roundtable/references/original-prompt.md` before running the discussion.
+2. Extract the core issue. If missing, ask for the topic.
+3. Propose 3-5 real representative figures with different positions.
+4. Open by aligning on definitions.
+5. Run dynamic response rounds moderated around the deepest current tension.
+6. After each round, produce a core dispute summary, ASCII thinking framework, and next guiding question.
+7. Continue until the user says `止`.
+8. Save the full transcript to `raw/roundtable-sessions/YYYYMMDDTHHMMSS--圆桌-topic__roundtable.md`.
+9. Trigger `wiki-ingest` on that raw file.
+
+Important boundary:
+
+Roundtable output is a full raw discussion record. Wiki synthesis should preserve tensions, positions, judgment frameworks, and open questions instead of flattening the debate into one answer.
+
 ## `wiki-query` In One Screen
 
 Use when the user wants to know what the knowledge base says.
@@ -371,7 +402,7 @@ Do not turn a spark into a full concept page unless the user asks for ingest.
 
 ## Teacher And Read-Books Integration
 
-The `teacher` and `read-books` skills are installed as first-class skills in this repository. They feed the knowledge base through `wiki-ingest`.
+The `teacher`, `read-books`, and `ljg-roundtable` skills are installed as first-class skills in this repository. They feed the knowledge base through `wiki-ingest`.
 
 If a teacher session produces a knowledge card:
 
@@ -394,6 +425,16 @@ If a read-books session finishes a module:
 
 3. Run `wiki-ingest` on the module outputs.
 4. Update the book page and related concept pages.
+
+If a roundtable discussion ends:
+
+1. Save the full transcript under:
+
+   `raw/roundtable-sessions/YYYYMMDDTHHMMSS--圆桌-topic__roundtable.md`
+
+2. Run `wiki-ingest` on that raw file.
+3. Update or create a topic page under `wiki/topics/`.
+4. Preserve key positions, tensions, judgment frameworks, and open questions.
 
 ## Required Logging
 
