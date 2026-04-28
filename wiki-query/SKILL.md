@@ -27,9 +27,10 @@ Read:
 5. Answer only from those pages. Use `[[Page Name]]` references in the answer.
 6. Prefer `判断框架`, `易混淆点`, and source-backed sections over loose summaries.
 7. Mention page quality when useful:
-   - `confidence`
-   - `evidence_level`
-   - `last_reviewed`
+   - `source_type`
+   - `mastery`
+   - `status`
+   - `updated`
    - unresolved `[!contradiction]` blocks
 8. If the wiki has no relevant page or insufficient evidence, say so plainly. Do not fill gaps from outside knowledge unless the user explicitly asks for a general answer.
 9. If the query itself reveals a useful missing page or recurring question, propose `wiki-spark` or `wiki-ingest`.
@@ -46,7 +47,7 @@ Use a compact structure:
 Example:
 
 ```markdown
-知识库里有关于 [[CI-CD]] 的内容。当前页面 confidence 是 medium，主要来源是 teacher session，所以它适合复习基本判断框架，但还缺少项目复盘支撑。
+知识库里有关于 [[CI-CD]] 的内容。当前页面 source_type 是 general_knowledge，所以它适合复习通用判断框架；如果要作为某本书或论文的结论，需要补充 original 来源。
 ```
 
 ## Rules

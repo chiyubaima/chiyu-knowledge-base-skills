@@ -40,15 +40,15 @@ High priority:
 
 - Orphan wiki pages with no inbound links.
 - Open contradictions: `[!contradiction]` blocks with `status: open` or no status.
-- Missing required frontmatter: `title`, `type`, `domain`, `status`, `sources`.
+- Missing required frontmatter: `title`, `type`, `domain`, `status`, `created`, `updated`, `sources`, `source_type`.
 - Broken wiki links whose target pages do not exist.
 
 Medium priority:
 
 - Stub pages: `status: stub` or body shorter than 10 meaningful lines.
 - Missing obvious links where a known concept title is mentioned without `[[...]]`.
-- Stale active pages: `updated` older than 6 months or missing `last_reviewed`.
-- Pages without `confidence` or `evidence_level`.
+- Stale active pages: `updated` older than 6 months.
+- Pages without `source_type`, or book pages whose `source_type` is not `original`.
 
 Exploratory:
 

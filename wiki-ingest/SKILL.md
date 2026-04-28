@@ -27,9 +27,9 @@ Important files:
 2. Read the source from a file path, URL, or pasted text. If the source is not already saved, save it under the appropriate raw directory:
    - articles/web pages: `raw/articles/YYYYMMDD-title.md`
    - papers: `raw/papers/YYYYMMDD-title.md`
-   - teacher output: `raw/teacher-sessions/YYYYMMDD-concept.md`
-   - read-books output: `raw/read-books-sessions/<book-name>/`
+   - teacher-pro output: `raw/teacher-pro-sessions/<topic-or-book>/`
    - roundtable output: `raw/roundtable-sessions/YYYYMMDDTHHMMSS--圆桌-topic__roundtable.md`
+   - sparks: `raw/sparks/YYYYMMDD-keywords.md`
 3. Identify existing related wiki pages and likely new pages.
 4. Ask at most 3 focus questions before doing full integration when the focus is unclear. Do not try to process every possible idea at once.
 5. Create or update wiki pages:
@@ -55,13 +55,11 @@ domain: []
 layer: ""
 status: active
 mastery: basic
-confidence: low
-evidence_level: personal
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-last_reviewed:
 sources:
   - "[[raw/...]]"
+source_type: "original"
 related: []
 confused_with: []
 ---
@@ -88,16 +86,18 @@ Use this body structure:
 
 For decision-oriented knowledge only, add optional sections such as `## 不适用场景`, `## 常见误用`, or `## 反例`. Do not add these mechanically to pure definition, person, book, or historical background pages.
 
-## Confidence Fields
+## Source Type
 
-Use these fields to keep pages honest:
+Every wiki page must identify its source basis:
 
-- `mastery`: user's learning depth, such as `basic`, `intermediate`, `advanced`
-- `confidence`: page reliability, such as `low`, `medium`, `high`
-- `evidence_level`: source base, such as `personal`, `secondary`, `primary`, `mixed`
-- `last_reviewed`: last substantive review date, or blank if never reviewed
+- `source_type: original`: based on provided source material such as a book, paper, article, URL, or raw source file.
+- `source_type: general_knowledge`: based on the agent's general knowledge rather than a provided source.
 
-Default new pages to conservative values. Raise confidence only when multiple sources, primary sources, or real project experience support the page.
+Routing rule:
+
+- `original` material may create or update `wiki/books/`, `wiki/concepts/`, or `wiki/topics/` depending on content.
+- `general_knowledge` material must not create `wiki/books/`; route it to `wiki/topics/` or `wiki/concepts/` and clearly mark `source_type: general_knowledge`.
+- If `source_type` is unclear, ask before writing.
 
 ## Contradictions
 
@@ -135,7 +135,8 @@ Append only:
 
 - Keep raw source files as source records. Do not rewrite raw files unless the user is explicitly adding a new source or correcting the raw record.
 - Wiki pages are maintained summaries and may be updated.
-- A teacher knowledge card is not a wiki concept page. Store it in raw first, then ingest it into wiki pages.
-- Teacher "判断框架" content is high-value and must be integrated into the concept page's `判断框架` section.
+- `teacher-pro` replaces the old `teacher` and `read-books` workflows. Its session files live under `raw/teacher-pro-sessions/`.
+- A teacher-pro lesson or progress file is not a wiki page. Store it in raw first, then ingest it into wiki pages.
+- Teacher-pro "判断框架" and module synthesis content is high-value and must be integrated into the relevant concept/topic/book page.
 - Roundtable discussions are high-value for topic synthesis. Preserve core tensions and open questions; do not flatten multiple positions into a fake consensus.
 - If the vault path is missing, stop and report that the local vault is not available at the configured path.

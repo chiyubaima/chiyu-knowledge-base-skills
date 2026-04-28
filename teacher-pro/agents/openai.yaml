@@ -1,0 +1,4 @@
+interface:
+  display_name: "Teacher Pro"
+  short_description: "Run mastery-learning sessions for topics, books, papers, articles, or URLs and integrate outputs into the knowledge base."
+  default_prompt: "Use teacher-pro to help me learn this and save the session into the knowledge base."

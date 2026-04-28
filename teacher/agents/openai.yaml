@@ -1,4 +1,0 @@
-interface:
-  display_name: "Teacher"
-  short_description: "Guide concept learning and save confirmed understanding into the knowledge base."
-  default_prompt: "Use teacher to help me understand this concept and save the confirmed knowledge card."
