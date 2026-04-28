@@ -226,3 +226,7 @@ Then configure the target vault path inside the skill instructions for that envi
 For agent-facing operational details, see:
 
 [AGENT_REUSE_GUIDE.md](./AGENT_REUSE_GUIDE.md)
+
+## License
+
+MIT
