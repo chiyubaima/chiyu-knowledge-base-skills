@@ -1,18 +1,18 @@
 # Personal Knowledge Base Skills
 
-Reusable AI-agent skills for learning, discussion, capture, and maintenance in an Obsidian-based personal knowledge base.
+Reusable AI-agent skills for learning, discussion, capture, ingestion, query, save, and maintenance in an Obsidian-based personal knowledge base.
 
 The system is built around one loop:
 
 ```text
-learn / discuss / capture -> preserve raw records -> compile into wiki knowledge -> query and maintain
+learn / discuss / capture -> preserve raw records -> compile sources -> maintain wiki knowledge -> query, save, and lint
 ```
 
-It is not a plain note-saving workflow. Raw material stays traceable, while maintained wiki pages become a living knowledge map with links, source types, contradictions, and judgment frameworks.
+It is not a plain note-saving workflow. Raw material stays traceable, important sources get summary pages, maintained wiki pages become a living knowledge map, and recent context is cached so future sessions can continue without starting cold.
 
 ## How The System Works
 
-The knowledge base has two layers.
+The knowledge base has a raw layer, a maintained wiki layer, and a lightweight runtime layer.
 
 ### Raw Layer
 
@@ -25,106 +25,74 @@ The raw layer stores source records:
 - sparks, ideas, and quotes
 - assets and attachments
 
-Raw files should preserve source context. They are the input layer, not the final knowledge layer.
+Raw files preserve source context. They are the input layer, not the final knowledge layer.
 
 ### Wiki Layer
 
 The wiki layer stores maintained knowledge:
 
+- source summary pages
 - concept pages
 - topic synthesis pages
 - book pages based on original sources
+- question and saved-answer pages
 - people pages
 - meta and maintenance pages
 
 Agents compile raw material into this layer by summarizing, linking, resolving boundaries, preserving contradictions, and making reusable judgment frameworks.
 
+### Runtime Layer
+
+The runtime layer keeps the system usable over time:
+
+- `wiki/hot.md`: recent context cache for fast follow-up questions
+- `raw/.manifest.json`: ingest manifest to avoid duplicate processing
+- `wiki/meta/lint-report-YYYY-MM-DD.md`: persistent health reports
+- `wiki/overview.md`: human-readable map of the knowledge base
+
 ## Included Skills
 
 ### `teacher-pro`
 
-Use this for learning a topic, book, paper, article, or URL.
+Unified learning skill for topics, books, papers, articles, and URLs.
 
-It replaces the older separate `teacher` and `read-books` workflows.
-
-What it does:
-
-1. Detects whether the user provided original source material.
-2. Marks the source basis as `original` or `general_knowledge`.
-3. Plans a mastery-learning path.
-4. Writes lesson and progress records into the raw layer.
-5. Runs checkpoint questions before moving forward.
-6. At module boundaries, hands the session output to `wiki-ingest`.
-
-Key rule:
-
-- `source_type: original` may support book pages, concept pages, or topic pages.
-- `source_type: general_knowledge` must not be treated as a book-source conclusion and should be routed to topic or concept synthesis.
+It detects whether the user provided original source material, marks the session as `original` or `general_knowledge`, writes lesson records into the raw layer, and hands module synthesis to `wiki-ingest`.
 
 ### `ljg-roundtable`
 
-Use this for structured multi-perspective debate.
+Structured multi-perspective debate skill.
 
-What it does:
-
-1. Extracts the core issue.
-2. Invites representative thinkers with distinct positions.
-3. Runs a moderated dialectical discussion.
-4. Generates ASCII thinking frameworks and a final knowledge network.
-5. Saves the full discussion into the raw layer.
-6. Hands the discussion record to `wiki-ingest` for topic synthesis.
+It saves the full transcript into the raw layer, then hands the discussion to `wiki-ingest` so key positions, tensions, open questions, and frameworks can become topic or question pages.
 
 ### `wiki-ingest`
 
-Use this when raw material should become maintained knowledge.
+Turns raw material into maintained wiki knowledge.
 
-What it does:
-
-1. Reads the existing knowledge map.
-2. Identifies or saves the raw source.
-3. Focuses on 1-3 core ideas.
-4. Creates or updates concept, topic, or book pages.
-5. Adds bidirectional links.
-6. Writes required frontmatter, including `source_type`.
-7. Updates the index and operation log.
+It checks the manifest, creates source summaries, updates concept/topic/book/question pages, adds wikilinks, updates `index.md`, `overview.md`, `hot.md`, `log.md`, and records what happened in `raw/.manifest.json`.
 
 ### `wiki-query`
 
-Use this when you want answers from the knowledge base.
+Answers from the maintained wiki.
 
-What it does:
+It supports quick, standard, and deep query modes. It starts with `wiki/hot.md`, reads the index, then opens only the pages needed for the chosen depth. Good answers can be saved through `wiki-save`.
 
-1. Reads the index.
-2. Searches maintained wiki pages.
-3. Answers only from available wiki material.
-4. Cites relevant `[[wiki pages]]`.
-5. Calls out source type, missing evidence, stale pages, or unresolved contradictions.
+### `wiki-save`
 
-If the wiki does not contain the answer, the agent should say so instead of inventing one.
+Saves valuable conversation output into the wiki.
+
+Use it for reusable answers, decisions, comparisons, frameworks, or session-level synthesis that emerged in chat rather than from a new external source.
 
 ### `wiki-lint`
 
-Use this for knowledge-base health checks.
+Runs health checks.
 
-It looks for:
-
-- orphan pages
-- broken links
-- missing required frontmatter
-- unresolved contradictions
-- stale active pages
-- stub pages
-- source-type mistakes, such as book pages not based on original sources
-
-It should produce a prioritized report before making repairs.
+It writes persistent lint reports, checks links/frontmatter/source types/manifest references/stale pages, and asks before repairing.
 
 ### `wiki-spark`
 
-Use this for fast capture.
+Fast capture for small ideas, quotes, and unfinished thoughts.
 
-It saves small ideas, quotes, observations, or unfinished thoughts into the raw layer without forcing a full synthesis step.
-
-Later, related sparks can be compiled with `wiki-ingest`.
+Sparks stay lightweight unless a cluster deserves `wiki-ingest`.
 
 ## Key Conventions
 
@@ -142,7 +110,7 @@ mastery: basic
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 sources:
-  - "[[raw/...]]"
+  - "[[wiki/sources/Source Title]]"
 source_type: "original"
 related: []
 confused_with: []
@@ -155,7 +123,7 @@ Required fields:
 title, type, domain, status, created, updated, sources, source_type
 ```
 
-`source_type` is the most important routing field:
+`source_type` is the key routing field:
 
 - `original`: based on provided source material.
 - `general_knowledge`: based on the agent's general knowledge and must be labeled clearly.
@@ -170,26 +138,16 @@ Contradictions should be preserved and tracked instead of silently overwritten.
 > Source B says: ...
 ```
 
-## Design Philosophy
-
-This workflow is optimized for:
-
-- durable knowledge over one-off summaries
-- source-backed answers over unsupported confidence
-- clear distinction between original sources and general knowledge
-- gradual synthesis over information hoarding
-- judgment frameworks over loose notes
-- explicit uncertainty over silent overwrites
-
 ## Reuse
 
-Install or copy the six skill folders into an agent environment that supports local skills:
+Install or copy the seven skill folders into an agent environment that supports local skills:
 
 ```text
 teacher-pro/
 ljg-roundtable/
 wiki-ingest/
 wiki-query/
+wiki-save/
 wiki-lint/
 wiki-spark/
 ```

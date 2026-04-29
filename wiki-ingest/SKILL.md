@@ -5,7 +5,7 @@ description: Compile new material into Chiyu's Obsidian knowledge base. Use when
 
 # Wiki Ingest
 
-Turn new material into maintained wiki knowledge. Do not merely archive content: save the source in the raw layer when needed, read the existing knowledge map, extract 1-3 focused points, update concept/topic/book pages, link related pages, and append the operation log.
+Turn new material into maintained wiki knowledge. Do not merely archive content: save or identify the source in the raw layer, avoid duplicate ingest with the manifest, create a source summary when useful, extract 1-3 focused points, update concept/topic/book pages, link related pages, update the hot cache, and append the operation log.
 
 ## Vault
 
@@ -18,29 +18,40 @@ Important files:
 - Schema: `/Users/chiyu/Documents/chiyu-knowledge-base/WIKI.md`
 - Index: `/Users/chiyu/Documents/chiyu-knowledge-base/index.md`
 - Log: `/Users/chiyu/Documents/chiyu-knowledge-base/log.md`
+- Hot cache: `/Users/chiyu/Documents/chiyu-knowledge-base/wiki/hot.md`
+- Overview: `/Users/chiyu/Documents/chiyu-knowledge-base/wiki/overview.md`
+- Manifest: `/Users/chiyu/Documents/chiyu-knowledge-base/raw/.manifest.json`
 - Raw layer: `/Users/chiyu/Documents/chiyu-knowledge-base/raw/`
 - Wiki layer: `/Users/chiyu/Documents/chiyu-knowledge-base/wiki/`
 
 ## Workflow
 
-1. Verify the vault exists and read `WIKI.md` plus `index.md`.
+1. Verify the vault exists and read `WIKI.md`, `wiki/hot.md` if present, and `index.md`.
 2. Read the source from a file path, URL, or pasted text. If the source is not already saved, save it under the appropriate raw directory:
    - articles/web pages: `raw/articles/YYYYMMDD-title.md`
    - papers: `raw/papers/YYYYMMDD-title.md`
    - teacher-pro output: `raw/teacher-pro-sessions/<topic-or-book>/`
    - roundtable output: `raw/roundtable-sessions/YYYYMMDDTHHMMSS--圆桌-topic__roundtable.md`
    - sparks: `raw/sparks/YYYYMMDD-keywords.md`
-3. Identify existing related wiki pages and likely new pages.
-4. Ask at most 3 focus questions before doing full integration when the focus is unclear. Do not try to process every possible idea at once.
-5. Create or update wiki pages:
+3. Check `raw/.manifest.json` before ingesting a raw file. If the same file path and content hash are already recorded, report that it was already ingested and stop unless the user asks for `force ingest`.
+4. Determine `source_type`.
+5. Create or update a `wiki/sources/` summary page for significant raw sources. Skip source summaries for tiny sparks unless they are being promoted.
+6. Identify existing related wiki pages and likely new pages.
+7. Ask at most 3 focus questions before doing full integration when the focus is unclear. Do not try to process every possible idea at once.
+8. Create or update wiki pages:
+   - Sources: `wiki/sources/<source-title>.md`
    - Concepts: `wiki/concepts/<concept>.md`
    - Topics: `wiki/topics/topic-<topic>.md`
    - Books: `wiki/books/book-<book>.md`
+   - Questions: `wiki/questions/<question-title>.md` when the source is primarily an answer or framed inquiry.
    - Roundtables usually update or create topic pages, with key positions, tensions, judgment frameworks, and open questions.
-6. Add `[[bidirectional links]]` for all referenced concepts whose pages exist or are created.
-7. Update `index.md` when new wiki pages or important entry points are added.
-8. Append to `log.md` using the standard log format.
-9. Reply with the created/updated pages and a short link count summary.
+9. Add `[[bidirectional links]]` for all referenced concepts whose pages exist or are created.
+10. Update `index.md` and relevant sub-indexes when new wiki pages or important entry points are added.
+11. Update `wiki/overview.md` if the big picture changed.
+12. Update `wiki/hot.md` with a short recent-context summary.
+13. Update `raw/.manifest.json` with the source hash and pages created/updated.
+14. Append to `log.md` using the standard log format.
+15. Reply with created/updated pages, source summary, link count, and whether the manifest was updated.
 
 ## Concept Page Template
 
@@ -99,6 +110,96 @@ Routing rule:
 - `general_knowledge` material must not create `wiki/books/`; route it to `wiki/topics/` or `wiki/concepts/` and clearly mark `source_type: general_knowledge`.
 - If `source_type` is unclear, ask before writing.
 
+## Source Summary Pages
+
+Create a source summary in `wiki/sources/` for substantial raw inputs such as articles, papers, teacher-pro module outputs, and roundtable transcripts.
+
+```yaml
+---
+title: "来源标题"
+type: source
+domain: []
+status: active
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+sources:
+  - "[[raw/...]]"
+source_type: "original"
+related: []
+---
+```
+
+Suggested body:
+
+```markdown
+# 来源标题
+
+## 来源摘要
+## 关键主张
+## 可提炼概念
+## 与已有知识的关系
+## 矛盾 / 待核实
+```
+
+Concept/topic/book pages should prefer citing `wiki/sources/` pages when a source summary exists, while still preserving raw links in the source page.
+
+## Manifest / Delta Tracking
+
+Use `raw/.manifest.json` to avoid re-processing unchanged raw files.
+
+Suggested schema:
+
+```json
+{
+  "sources": {
+    "raw/articles/example.md": {
+      "hash": "sha256...",
+      "ingested_at": "YYYY-MM-DD",
+      "source_type": "original",
+      "source_page": "wiki/sources/example.md",
+      "pages_created": [],
+      "pages_updated": []
+    }
+  }
+}
+```
+
+Before ingesting:
+
+1. Compute a stable hash of the raw file.
+2. If the same path and hash exist in the manifest, stop and report "already ingested" unless the user asks for `force ingest`.
+3. If content changed or force is requested, proceed and update the manifest.
+
+## Hot Cache
+
+Update `wiki/hot.md` after every successful ingest.
+
+Keep it under about 500 words:
+
+```markdown
+---
+title: "Hot Cache"
+type: meta
+status: active
+updated: YYYY-MM-DD
+---
+
+# Recent Context
+
+## Last Updated
+YYYY-MM-DD — ...
+
+## Key Recent Facts
+- ...
+
+## Recent Changes
+- Created: ...
+- Updated: ...
+
+## Active Threads
+- ...
+```
+
 ## Contradictions
 
 Never silently overwrite contradictions. Preserve both claims and mark status:
@@ -134,6 +235,7 @@ Append only:
 ## Rules
 
 - Keep raw source files as source records. Do not rewrite raw files unless the user is explicitly adding a new source or correcting the raw record.
+- `raw/.manifest.json` is the only raw file this skill may maintain.
 - Wiki pages are maintained summaries and may be updated.
 - `teacher-pro` replaces the old `teacher` and `read-books` workflows. Its session files live under `raw/teacher-pro-sessions/`.
 - A teacher-pro lesson or progress file is not a wiki page. Store it in raw first, then ingest it into wiki pages.

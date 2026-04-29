@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wiki Save"
+  short_description: "Save valuable answers, decisions, and synthesis into the maintained wiki."
+  default_prompt: "Use wiki-save to preserve this answer or discussion in my knowledge base."

@@ -123,9 +123,12 @@ Assistant: [Launches roundtable discussion on free will]
       - 核心争议点和立场谱系
       - 可复用的判断框架
       - 值得进入 `wiki/topics/` 的主题综合
+      - 值得进入 `wiki/questions/` 的开放问题或核心问题
       - 值得进入 `wiki/concepts/` 的概念页
       - 未解决开放问题
-   5. 向用户报告 raw 文件路径、wiki-ingest 创建/更新的页面，以及新增链接数量。
+      - `wiki/sources/` 中的圆桌来源摘要
+   5. 确保 `wiki-ingest` 更新 `wiki/hot.md` 和 `raw/.manifest.json`。
+   6. 向用户报告 raw 文件路径、wiki-ingest 创建/更新的页面，以及新增链接数量。
 
 ### 知识库接入规则
 
@@ -133,6 +136,7 @@ Assistant: [Launches roundtable discussion on free will]
 - 不要把圆桌原文直接当作 wiki 结论；正式知识必须由 `wiki-ingest` 编译。
 - 如果讨论产生多个互相冲突的立场，保留张力，不要强行综合成单一答案。
 - 如果讨论中暴露未解决问题，在 wiki 主题页中保留为「开放问题」或「后续延伸」。
+- 如果某个圆桌问题本身值得长期追踪，可由 `wiki-ingest` 创建 `wiki/questions/` 页面，或由 `wiki-save` 保存后续答案。
 
 ### 主持人行为准则
 

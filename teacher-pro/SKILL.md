@@ -111,6 +111,7 @@ description: Use when the user wants to read a book, paper, article, or learn ab
 综合回顾完成后触发 wiki-ingest：
 - 来源类型 = `original` → 入库到 `wiki/books/`（书籍页）或 `wiki/concepts/`
 - 来源类型 = `general_knowledge` → 入库到 `wiki/topics/`，frontmatter 标注 `source_type: general_knowledge`
+- wiki-ingest 应创建/更新 `wiki/sources/` 来源摘要页，并更新 `wiki/hot.md` 与 `raw/.manifest.json`
 - 更新进度.md 的「已入库知识点」章节
 
 ### 知识库接入规则
@@ -120,6 +121,7 @@ description: Use when the user wants to read a book, paper, article, or learn ab
 - `source_type` 是入库边界：`original` 可进入 `wiki/books/` 或 `wiki/concepts/`；`general_knowledge` 不得进入 `wiki/books/`，应进入 `wiki/topics/` 并标注来源类型。
 - 课程文件和 `进度.md` 属于 raw 学习记录；正式 wiki 页面必须由 `wiki-ingest` 编译生成。
 - wiki 页面必须遵守 vault 的 `WIKI.md` 规范，尤其是必填 frontmatter：`title`、`type`、`domain`、`status`、`created`、`updated`、`sources`、`source_type`。
+- 模块结束后的高价值总结如果不是外部来源入库，而是对话中形成的决策/框架，可交给 `wiki-save` 保存为 `wiki/questions/` 或 `wiki/topics/` 页面。
 
 ---
 

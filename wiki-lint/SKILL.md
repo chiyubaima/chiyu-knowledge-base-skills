@@ -5,7 +5,7 @@ description: Run health checks and maintenance on Chiyu's Obsidian knowledge bas
 
 # Wiki Lint
 
-Inspect the maintained wiki for structural problems and knowledge decay. Produce a prioritized report first; only repair after the user confirms the scope.
+Inspect the maintained wiki for structural problems and knowledge decay. Produce a persistent lint report first; only repair after the user confirms the scope.
 
 ## Vault
 
@@ -23,16 +23,18 @@ Inspect:
 Write reports to:
 
 - `wiki/meta/lint-history.md`
+- `wiki/meta/lint-report-YYYY-MM-DD.md`
 
 ## Workflow
 
 1. Verify the vault exists and read `WIKI.md`.
 2. Scan all Markdown files under `wiki/`.
-3. Produce a health report grouped by priority.
+3. Produce a health report grouped by priority and write it to `wiki/meta/lint-report-YYYY-MM-DD.md`.
 4. Ask which issues to repair.
 5. Apply confirmed repairs only.
 6. Append the lint run to `log.md`.
 7. Append detailed results to `wiki/meta/lint-history.md`.
+8. Update `wiki/hot.md` if lint reveals major active issues.
 
 ## Checks
 
@@ -42,6 +44,7 @@ High priority:
 - Open contradictions: `[!contradiction]` blocks with `status: open` or no status.
 - Missing required frontmatter: `title`, `type`, `domain`, `status`, `created`, `updated`, `sources`, `source_type`.
 - Broken wiki links whose target pages do not exist.
+- `raw/.manifest.json` references pages that no longer exist.
 
 Medium priority:
 
@@ -49,12 +52,15 @@ Medium priority:
 - Missing obvious links where a known concept title is mentioned without `[[...]]`.
 - Stale active pages: `updated` older than 6 months.
 - Pages without `source_type`, or book pages whose `source_type` is not `original`.
+- Source pages missing raw links.
+- Questions or saved pages missing `question` or `answer_quality` when applicable.
 
 Exploratory:
 
 - Concepts mentioned by multiple pages but missing their own concept page.
 - `后续延伸` items without pages.
 - Clusters of 5 or more related sparks/raw notes that may deserve `wiki-ingest`.
+- Pages that should be split because they cover multiple concepts.
 
 ## Repair Rules
 
@@ -69,6 +75,16 @@ Exploratory:
 Use this shape:
 
 ```markdown
+---
+title: "Wiki Lint Report YYYY-MM-DD"
+type: meta
+status: active
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+sources: []
+source_type: "general_knowledge"
+---
+
 # Wiki Lint Report - YYYY-MM-DD
 
 ## Red
