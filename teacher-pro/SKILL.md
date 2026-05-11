@@ -1,6 +1,10 @@
 ---
 name: teacher-pro
-description: Use when the user wants to read a book, paper, article, or learn about a topic. Handles both cases: user provides content (book/paper/article/URL) for source-based teaching, or user names a topic/book without providing content for knowledge-based teaching with explicit source disclosure.
+description: >-
+  Use when the user wants to read a book, paper, article, or learn about a
+  topic. Handles both cases: user provides content (book/paper/article/URL) for
+  source-based teaching, or user names a topic/book without providing content
+  for knowledge-based teaching with explicit source disclosure.
 ---
 
 # teacher-pro
