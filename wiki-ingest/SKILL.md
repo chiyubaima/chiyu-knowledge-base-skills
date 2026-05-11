@@ -27,7 +27,7 @@ Important files:
 ## Workflow
 
 1. Verify the vault exists and read `WIKI.md`, `wiki/hot.md` if present, and `index.md`.
-2. Read the source from a file path, URL, or pasted text. If the source is not already saved, save it under the appropriate raw directory:
+2. Read the source from a file path, URL, or pasted text. If the source URL is from `mp.weixin.qq.com`, do not use WebFetch because it is commonly blocked by verification; use gstack browse instead (`$B goto <url>` followed by `$B text`) to capture the article body. For other sources, keep the normal source-reading flow. If the source is not already saved, save it under the appropriate raw directory:
    - articles/web pages: `raw/articles/YYYYMMDD-title.md`
    - papers: `raw/papers/YYYYMMDD-title.md`
    - teacher-pro output: `raw/teacher-pro-sessions/<topic-or-book>/`
@@ -38,20 +38,52 @@ Important files:
 5. Create or update a `wiki/sources/` summary page for significant raw sources. Skip source summaries for tiny sparks unless they are being promoted.
 6. Identify existing related wiki pages and likely new pages.
 7. Ask at most 3 focus questions before doing full integration when the focus is unclear. Do not try to process every possible idea at once.
-8. Create or update wiki pages:
+8. Before creating concept pages, scan the source for all named concepts. For each candidate, ask: "Does this concept have independent meaning and can it be reused in other contexts?" Only create pages that pass this test. See **Concept Page Granularity** section below for rules and examples.
+9. Create or update wiki pages:
    - Sources: `wiki/sources/<source-title>.md`
    - Concepts: `wiki/concepts/<concept>.md`
    - Topics: `wiki/topics/topic-<topic>.md`
    - Books: `wiki/books/book-<book>.md`
    - Questions: `wiki/questions/<question-title>.md` when the source is primarily an answer or framed inquiry.
    - Roundtables usually update or create topic pages, with key positions, tensions, judgment frameworks, and open questions.
-9. Add `[[bidirectional links]]` for all referenced concepts whose pages exist or are created.
-10. Update `index.md` and relevant sub-indexes when new wiki pages or important entry points are added.
-11. Update `wiki/overview.md` if the big picture changed.
-12. Update `wiki/hot.md` with a short recent-context summary.
-13. Update `raw/.manifest.json` with the source hash and pages created/updated.
-14. Append to `log.md` using the standard log format.
-15. Reply with created/updated pages, source summary, link count, and whether the manifest was updated.
+10. Add `[[bidirectional links]]` for all referenced concepts whose pages exist or are created.
+11. Update `index.md` and relevant sub-indexes when new wiki pages or important entry points are added.
+12. Update `wiki/overview.md` if the big picture changed.
+13. Update `wiki/hot.md` with a short recent-context summary.
+14. Update `raw/.manifest.json` with the source hash and pages created/updated.
+15. Append to `log.md` using the standard log format.
+16. Reply with created/updated pages, source summary, link count, and whether the manifest was updated.
+
+## Concept Page Granularity
+
+Each concept page must represent one independent, reusable unit of knowledge.
+
+Before creating a new concept page, the candidate must pass all three tests:
+
+- Independent meaning: Does this concept have a clear definition outside the source material?
+- Reusability: Could pages about completely different topics link to this page?
+- Non-container: Is this itself a concept, rather than a collection of multiple concepts?
+
+Create independent concept pages for the following kinds of correctly scoped concepts:
+
+- Named technologies, models, or algorithms: `AUC.md`, `GBDT.md`, `特征泄露.md`
+- Named phenomena or failure modes: `模型退化.md`, `过拟合与欠拟合.md`
+- Named design principles or patterns: `基线模型.md`, `向量检索.md`
+- Named metrics or evaluation methods: `NDCG.md`, `离线在线一致性.md`
+
+Do not create concept pages for poorly scoped containers:
+
+- Course names or lesson titles: ~~`业务问题到模型选择.md`~~, ~~`模型问题诊断.md`~~
+- Broad frameworks that wrap multiple concepts: ~~`函数方法论.md`~~; split into smaller concepts instead.
+- Category labels: ~~`模型特征.md`~~; split into smaller concepts instead.
+- Workflow descriptions: ~~`训练样本.md`~~; split into smaller concepts instead.
+
+When the source has no clear concept boundary, which is common in teacher-pro courses:
+
+- Scan the source and list all named concepts.
+- Apply the three-test check to each name.
+- Create only the pages that pass, even if one lesson yields 8 separate pages.
+- Fold high-level summaries into `wiki/topics/` instead of creating broad concept pages.
 
 ## Concept Page Template
 
